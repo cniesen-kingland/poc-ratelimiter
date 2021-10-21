@@ -1,16 +1,18 @@
 package com.example.pocratelimiter;
 
-import com.google.common.util.concurrent.RateLimiter;
+
+import org.springframework.jms.annotation.JmsListener;
+import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Component
 public class ProcessorOne {
-    RateLimiter rateLimiter = RateLimiter.create(2);
 
-    public void process() {
-        rateLimiter.acquire();
-        System.out.println( getCurrentTimeStamp() + " " + Thread.currentThread().getName() + " Completed..........");
+    @JmsListener(destination = "test")
+    public void process(String message) {
+        System.out.println( getCurrentTimeStamp() + " " + Thread.currentThread().getName() + " " + message + " Completed..........");
     }
 
     private String getCurrentTimeStamp() {

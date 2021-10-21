@@ -10,14 +10,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
-public class ProcessorOne {
+public class ProcessorTwo {
     @Autowired
     RateLimiter rateLimiter;
 
-    @JmsListener(destination = "test")
+    @JmsListener(destination = "test", concurrency = "2-2")
     public void process(String message) {
         rateLimiter.acquire();
-        System.out.println( getCurrentTimeStamp() + " " + Thread.currentThread().getName() + " Processor-One " + message + " Completed..........");
+        System.out.println( getCurrentTimeStamp() + " " + Thread.currentThread().getName() + " Processor-Two " + message + " Completed..........");
     }
 
     private String getCurrentTimeStamp() {

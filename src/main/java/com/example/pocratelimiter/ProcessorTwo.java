@@ -11,10 +11,14 @@ import java.util.Date;
 
 @Component
 public class ProcessorTwo {
-    @Autowired
-    RateLimiter rateLimiter;
+    final RateLimiter rateLimiter;
 
-    @JmsListener(destination = "test", concurrency = "2-2")
+    public ProcessorTwo(RateLimiter rateLimiter) {
+        this.rateLimiter = rateLimiter;
+    }
+
+    @JmsListener(destination = "test")
+    //@JmsListener(destination = "test", concurrency = "2-2")
     public void process(String message) {
         rateLimiter.acquire();
         System.out.println( getCurrentTimeStamp() + " " + Thread.currentThread().getName() + " Processor-Two " + message + " Completed..........");

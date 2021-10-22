@@ -2,7 +2,6 @@ package com.example.pocratelimiter;
 
 
 import com.google.common.util.concurrent.RateLimiter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 
@@ -11,8 +10,11 @@ import java.util.Date;
 
 @Component
 public class ProcessorOne {
-    @Autowired
-    RateLimiter rateLimiter;
+    final RateLimiter rateLimiter;
+
+    public ProcessorOne(RateLimiter rateLimiter) {
+        this.rateLimiter = rateLimiter;
+    }
 
     @JmsListener(destination = "test")
     public void process(String message) {

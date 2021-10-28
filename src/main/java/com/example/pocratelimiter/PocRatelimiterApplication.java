@@ -15,6 +15,9 @@ public class PocRatelimiterApplication implements CommandLineRunner {
 	@Autowired
 	JmsTemplate jmsTemplate;
 
+	@Autowired
+	RateLimitUpdater rateLimitUpdater;
+
 	@Bean
 	public RateLimiter jmsRateLimiter() {
 		return RateLimiter.create(2);
@@ -29,5 +32,10 @@ public class PocRatelimiterApplication implements CommandLineRunner {
 		for (int i=0; i < 30; i++){
 			jmsTemplate.convertAndSend("test", "Message-" + i);
 		}
+		rateLimitUpdater.update(4);
+		for (int i=0; i < 30; i++){
+			jmsTemplate.convertAndSend("test", "Message-" + i);
+		}
+
 	}
 }
